@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organelos Celulares - Interactivos</title>
+    <style>
+        /* Estilos del Cuestionario Original */
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 950px; margin: 0 auto; padding: 20px; background-color: #f4f7f6; }
+        header { background: linear-gradient(135deg, #2c3e50, #3498db); color: white; padding: 25px; text-align: center; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        h2 { color: #2980b9; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 0; }
+        .img-container { text-align: center; margin: 20px 0; padding: 15px; background: #fff; border: 2px solid #ddd; border-radius: 8px; }
+        .img-container img { max-width: 100%; height: auto; border-radius: 4px; }
+        .pregunta { margin-bottom: 25px; padding: 15px; border-left: 5px solid #3498db; background: #fefefe; border-radius: 0 8px 8px 0; }
+        .opcion { display: block; margin: 10px 0; padding: 12px; background: #fff; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .opcion:hover { background: #e8f4fd; }
+        .correcta { background: #d4edda !important; border-color: #28a745 !important; color: #155724; font-weight: bold; }
+        .incorrecta { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24; }
+        .input-box { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+        input[type="text"] { flex-grow: 1; padding: 10px; border: 2px solid #ddd; border-radius: 6px; min-width: 200px; }
+        button { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        
+        /* Marcadores y Botones Flotantes */
+        .score-float { position: fixed; bottom: 20px; right: 20px; background: #2c3e50; color: white; padding: 15px 25px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 100; font-weight: bold; }
+        .btn-guia { position: fixed; bottom: 20px; left: 20px; background: #0984e3; color: white; padding: 15px 25px; border-radius: 50px; cursor: pointer; z-index: 100; font-weight: bold; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+
+        /* Estilos del Modal (La Guía) */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); overflow-y: auto; }
+        .modal-content { background-color: #f0f4f8; margin: 5% auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 1000px; position: relative; }
+        .close-modal { position: absolute; top: 15px; right: 25px; font-size: 35px; font-weight: bold; cursor: pointer; color: #333; }
+        
+        /* Estilos de la Guía (Copiados de tu segundo código) */
+        .grid-guia { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
+        .card-guia { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 5px solid #0984e3; }
+        .pista { background: #e1f5fe; padding: 10px; border-radius: 8px; margin: 10px 0; font-style: italic; border-left: 4px solid #00a8ff; font-size: 0.9em; }
+        .alerta { color: #d63031; font-weight: bold; font-size: 0.8em; text-transform: uppercase; }
+        .feedback { margin-top: 8px; font-weight: bold; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="score-float">Aciertos: <span id="puntos">0</span> / 22</div>
+<button class="btn-guia" onclick="abrirGuia()">📖 Ver Guía de Apoyo</button>
+
+<header>
+    <h1>La Célula y su estructura</h1>
+    <p>Resuelve los ejercicios. Si te pierdes, usa el botón de la izquierda.</p>
+</header>
+
+<div class="card">
+    <h2>I. Identificación por Posición (1-5)</h2>
+    <div class="img-container">
+        <img src="Gemini_Generated_Image_t813b2t813b2t813.png" alt="Esquema de Célula Animal con Números" width="500">
+        <span class="img-label">Referencia: Diagrama de la Célula Animal</span>
+    </div>
+
+    <div class="pregunta">
+        <p>1. ¿Cómo se llama el organelo en forma de saco que suele estar marcado cerca del número 3?</p>
+        <div class="opcion" onclick="validarClick(this, true)">Aparato de Golgi</div>
+        <div class="opcion" onclick="validarClick(this, false)">Retículo Liso</div>
+        <div class="opcion" onclick="validarClick(this, false)">Vesícula</div>
+    </div>
+
+    <div class="pregunta">
+        <p>2. ¿Qué estructura cilíndrica (cerca de la posición 6 en parejas) ayuda en la división de la célula animal?</p>
+        <div class="opcion" onclick="validarClick(this, false)">Lisosoma</div>
+        <div class="opcion" onclick="validarClick(this, true)">Centríolo</div>
+        <div class="opcion" onclick="validarClick(this, false)">Peroxisoma</div>
+    </div>
+
+    <div class="pregunta">
+        <p>3. El armazón interno de la célula, distribuido por todo el citoplasma como un esqueleto, se llama:</p>
+        <div class="opcion" onclick="validarClick(this, false)">Citosol</div>
+        <div class="opcion" onclick="validarClick(this, true)">Citoesqueleto</div>
+        <div class="opcion" onclick="validarClick(this, false)">Membrana Plasmática</div>
+    </div>
+
+    <div class="pregunta">
+        <p>4. ¿Dónde encontrarías cloroplastos?</p>
+        <div class="opcion" onclick="validarClick(this, false)">En una célula animal</div>
+        <div class="opcion" onclick="validarClick(this, true)">En una célula de planta o alga (célula vegetal)</div>
+        <div class="opcion" onclick="validarClick(this, false)">En ambas</div>
+    </div>
+
+    <div class="pregunta">
+        <p>5. ¿Qué estructura protege el ADN y coordina las funciones centrales?</p>
+        <div class="opcion" onclick="validarClick(this, false)">Mitocondria</div>
+        <div class="opcion" onclick="validarClick(this, false)">Vacuola</div>
+        <div class="opcion" onclick="validarClick(this, true)">Núcleo</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>II. Funciones Celulares (6-13)</h2>
+    
+    <div class="pregunta">
+        <p>6. ¿Quién fabrica las proteínas según las instrucciones del ARN?</p>
+        <div class="opcion" onclick="validarClick(this, true)">Ribosomas</div>
+        <div class="opcion" onclick="validarClick(this, false)">Aparato de Golgi</div>
+        <div class="opcion" onclick="validarClick(this, false)">Mitocondrias</div>
+    </div>
+
+    <div class="pregunta">
+        <p>7. ¿Cuál es el organelo que produce lípidos y carbohidratos?</p>
+        <div class="opcion" onclick="validarClick(this, false)">R.E. Rugoso</div>
+        <div class="opcion" onclick="validarClick(this, true)">R.E. Liso</div>
+        <div class="opcion" onclick="validarClick(this, false)">Peroxisomas</div>
+    </div>
+
+    <div class="pregunta">
+        <p>8. "Central eléctrica" de la célula encargada del ATP (energía):</p>
+        <div class="opcion" onclick="validarClick(this, true)">Mitocondria</div>
+        <div class="opcion" onclick="validarClick(this, false)">Cloroplasto</div>
+        <div class="opcion" onclick="validarClick(this, false)">Vacuola</div>
+    </div>
+
+    <div class="pregunta">
+        <p>9. Organelo que elimina sustancias tóxicas y ácidos grasos:</p>
+        <div class="opcion" onclick="validarClick(this, true)">Peroxisomas</div>
+        <div class="opcion" onclick="validarClick(this, false)">Lisosomas</div>
+        <div class="opcion" onclick="validarClick(this, false)">Centríolos</div>
+    </div>
+
+    <div class="pregunta">
+        <p>10. ¿Qué organelo se encarga de la fotosíntesis?</p>
+        <div class="opcion" onclick="validarClick(this, true)">Cloroplasto</div>
+        <div class="opcion" onclick="validarClick(this, false)">Mitocondria</div>
+        <div class="opcion" onclick="validarClick(this, false)">Nucléolo</div>
+    </div>
+
+    <div class="pregunta">
+        <p>11. ¿Cómo se llama el conjunto de sáculos o membranas aplanadas que forman el aparato de Golgi?</p>
+        <div class="opcion" onclick="validarClick(this, false)">Cisternas</div>
+        <div class="opcion" onclick="validarClick(this, true)">Dictiosomas</div>
+        <div class="opcion" onclick="validarClick(this, false)">Poros</div>
+    </div>
+
+    <div class="pregunta">
+        <p>12. Las vesículas transportan sustancias dentro y fuera de:</p>
+        <div class="opcion" onclick="validarClick(this, true)">La célula</div>
+        <div class="opcion" onclick="validarClick(this, false)">El cuerpo solamente</div>
+        <div class="opcion" onclick="validarClick(this, false)">El núcleo solamente</div>
+    </div>
+
+    <div class="pregunta">
+        <p>13. Las enzimas de los lisosomas pueden eliminar:</p>
+        <div class="opcion" onclick="validarClick(this, true)">Agentes patógenos (bacterias, virus)</div>
+        <div class="opcion" onclick="validarClick(this, false)">ADN útil</div>
+        <div class="opcion" onclick="validarClick(this, false)">Agua necesaria</div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>III. Desafío de Escritura (14-22)</h2>
+    <p>Escribe la respuesta correcta (no olvides las tildes si es necesario):</p>
+
+    <div class="pregunta">
+        <p>14. Nombre del fluido compuesto de agua y sales donde flotan los organelos:</p>
+        <div class="input-box">
+            <input type="text" id="p14" placeholder="Escribe aquí...">
+            <button onclick="validarTexto('p14', 'citosol')">Revisar</button>
+        </div>
+        <p id="f-p14" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>15. El retículo endoplásmico rugoso se llama así por la presencia de:</p>
+        <div class="input-box">
+            <input type="text" id="p15" placeholder="Escribe aquí...">
+            <button onclick="validarTexto('p15', 'ribosomas')">Revisar</button>
+        </div>
+        <p id="f-p15" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>16. El pigmento principal de los cloroplastos es la:</p>
+        <div class="input-box">
+            <input type="text" id="p16" placeholder="Escribe aquí...">
+            <button onclick="validarTexto('p16', 'clorofila')">Revisar</button>
+        </div>
+        <p id="f-p16" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>17. ¿Qué organelo almacena agua y nutrientes (especialmente grande en plantas)?</p>
+        <div class="input-box">
+            <input type="text" id="p17" placeholder="Escribe aquí...">
+            <button onclick="validarTexto('p17', 'vacuola')">Revisar</button>
+        </div>
+        <p id="f-p17" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>18. El núcleo coordina la división, nutrición y ___________ celular.</p>
+        <div class="input-box">
+            <input type="text" id="p18" placeholder="Escribe aquí...">
+            <button onclick="validarTexto('p18', 'crecimiento')">Revisar</button>
+        </div>
+        <p id="f-p18" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>19. ¿Cómo se llaman los sacos que transportan sustancias creados por el Golgi?</p>
+        <div class="input-box">
+            <input type="text" id="p19" placeholder="Escribe aquí...">
+            <button onclick="validarTexto('p19', 'vesiculas')">Revisar</button>
+        </div>
+        <p id="f-p19" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>20. Los _________ son exclusivos de la célula animal.</p>
+        <div class="input-box">
+            <input type="text" id="p20" placeholder="Escribe aquí...">
+            <button onclick="validarTexto('p20', 'centriolos')">Revisar</button>
+        </div>
+        <p id="f-p20" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>21. La membrana externa del núcleo tiene ________ para permitir entrada y salida.</p>
+        <div class="input-box">
+            <input type="text" id="p21" placeholder="Pista: Hoyitos">
+            <button onclick="validarTexto('p21', 'poros')">Revisar</button>
+        </div>
+        <p id="f-p21" class="feedback"></p>
+    </div>
+
+    <div class="pregunta">
+        <p>22. El nucleolo se encuentra en el interior del:</p>
+        <div class="input-box">
+            <input type="text" id="p22" placeholder="Escribe aquí...">
+            <button onclick="validarTexto('p22', 'nucleo')">Revisar</button>
+        </div>
+        <p id="f-p22" class="feedback"></p>
+    </div>
+</div>
+
+<div id="modalGuia" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="cerrarGuia()">&times;</span>
+        <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Estructura Celular</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 20px; background-color: #f0f4f8; }
+        header { background: linear-gradient(135deg, #1e3799, #0984e3); color: white; padding: 30px; text-align: center; border-radius: 15px; margin-bottom: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid #0984e3; }
+        h2 { color: #1e3799; font-size: 1.4em; margin-top: 0; }
+        .pista { background: #e1f5fe; padding: 10px; border-radius: 8px; margin: 10px 0; font-style: italic; border-left: 4px solid #00a8ff; }
+        .explicacion { font-size: 0.95em; color: #444; }
+        .alerta { color: #d63031; font-weight: bold; font-size: 0.85em; text-transform: uppercase; }
+        .badge { background: #00b894; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>La Célula</h1>
+    <p>Usalo en caso de no poder resolver</p>
+</header>
+
+<div class="grid">
+    <div class="card">
+        <h2>👑 El Núcleo y sus Aliados</h2>
+        <p class="explicacion">Es la biblioteca central donde se guardan los planos (ADN) para construir al ser vivo.</p>
+        <div class="pista">"Soy el que manda, pero tengo ventanas pequeñas (poros) para dejar salir las instrucciones al resto de la fábrica."</div>
+        <p class="alerta">✍️ Tip: Si hablas del centro, es el NÚCLEO (con tilde).</p>
+    </div>
+
+    <div class="card">
+        <h2>🏭 Retículos y Ribosomas</h2>
+        <p class="explicacion">El <b>RER</b> parece una lija porque tiene puntos pegados. El <b>REL</b> es suave porque fabrica grasas.</p>
+        <div class="pista">"Si el retículo es rugoso es porque tiene RIBOSOMAS. Sin ellos, no habría proteínas."</div>
+        <p class="alerta">✍️ Tip: Ribosomas se escribe con 'B'.</p>
+    </div>
+
+    <div class="card">
+        <h2>⚡ Centrales Eléctricas</h2>
+        <p class="explicacion">La célula necesita "pilas" llamadas ATP. Hay dos tipos de centrales según el organismo.</p>
+        <div class="pista">"Si es animal, uso MITOCONDRIAS (queman azúcar). Si es planta, uso CLOROPLASTOS (usan sol)."</div>
+        <span class="badge">Dato:</span> El pigmento de la planta es la CLOROFILA.
+    </div>
+
+    <div class="card">
+        <h2>📦 Golgi y el Transporte</h2>
+        <p class="explicacion">El Aparato de Golgi funciona como una oficina de correos: recibe, etiqueta y envía.</p>
+        <div class="pista">"Mis paquetes se llaman VESÍCULAS. Mis capas de sacos se llaman DICTIOSOMAS."</div>
+        <p class="alerta">✍️ Tip: Vesículas lleva tilde en la 'Í'.</p>
+    </div>
+
+    <div class="card">
+        <h2>🧹 Reciclaje y Depósitos</h2>
+        <p class="explicacion">Los <b>Lisosomas</b> tienen ácidos fuertes. Las <b>Vacuolas</b> son grandes bodegas de agua.</p>
+        <div class="pista">"La VACUOLA en las plantas es tan grande que empuja todo hacia las paredes."</div>
+        <div class="pista">"Los PEROXISOMAS limpian venenos como el alcohol o el peróxido."</div>
+    </div>
+
+    <div class="card">
+        <h2>🌊 El Medio Ambiente</h2>
+        <p class="explicacion">Todo lo que no es organelo es el espacio donde flotan.</p>
+        <div class="pista">"Soy el líquido vital. Mi nombre termina en -SOL, como si fuera la solución a todo." (CITOSOL)</div>
+        <p class="alerta">✍️ Ortografía: No confundas CITOSOL con CITOPLASMA (el citoplasma incluye a los organelos).</p>
+    </div>
+
+  <header>
+    <h1>Guía de Apoyo: Desafío de Escritura</h1>
+    <p>Conceptos clave para las preguntas 14 a 22</p>
+  </header>
+
+<div class="card">
+        <p><span class="explicacion">14</span> <span class="pregunta-titulo">El fluido de la célula</span></p>
+        <div class="pista">Es la fase acuosa del citoplasma. Imagínalo como el "caldo" o gelatina donde flotan los organelos.</div>
+        <div class="alerta"><strong>Respuesta correcta:</strong> Citosol</div>
+    </div>
+
+    <div class="card">
+        <p><span class="explicacion">15</span> <span class="pregunta-titulo">¿Por qué es "Rugoso"?</span></p>
+        <div class="pista">El retículo se ve rugoso porque tiene miles de pequeños puntos pegados encargados de fabricar proteínas.</div>
+        <div class="alerta"><strong>Respuesta correcta:</strong> Ribosomas</div>
+    </div>
+    
+
+    <div class="card">
+        <p><span class="explicacion">16</span> <span class="pregunta-titulo">El color de las plantas</span></p>
+        <div class="pista">Los cloroplastos contienen un pigmento verde que atrapa la luz solar para la fotosíntesis.</div>
+        <div class="alerta"><strong>Respuesta correcta:</strong> Clorofila</div>
+    </div>
+
+    <div class="card">
+        <p><span class="explicacion">17</span> <span class="pregunta-titulo">El gran almacén vegetal</span></p>
+        <div class="pista">En las plantas, este organelo es enorme y sirve para guardar agua y dar firmeza a la célula.</div>
+        <div class="alerta"><strong>Respuesta correcta:</strong> Vacuola</div>
+    </div>
+    
+
+    <div class="card">
+        <p><span class="explicacion">18</span> <span class="pregunta-titulo">Funciones del Núcleo</span></p>
+        <div class="pista">Además de la reproducción y nutrición, el núcleo controla que la célula aumente de tamaño o pase por su ciclo de <span class="keyword">crecimiento</span>.</div>
+        <div class="alerta"><strong>Respuesta correcta:</strong> Crecimiento</div>
+    </div>
+
+    <div class="card">
+        <p><span class="explicacion">19</span> <span class="pregunta-titulo">Los paquetes del Golgi</span></p>
+        <div class="pista">El aparato de Golgi empaqueta sustancias en pequeñas bolsas o sacos de transporte.</div>
+        <div class="alerta"><strong>Respuesta correcta:</strong> Vesículas</div>
+    </div>
+
+    <div class="card">
+        <p><span class="explicacion">20</span> <span class="pregunta-titulo">Exclusivos de animales</span></p>
+        <div class="pista">Son cilindros que ayudan a organizar la división celular. Las plantas no los tienen.</div>
+        <div class="alerta"><strong>Respuesta correcta:</strong> Centriolos (o Centríolos)</div>
+    </div>
+
+
+    <div class="card">
+        <p><span class="explicacion">21</span> <span class="pregunta-titulo">La comunicación del núcleo</span></p>
+        <div class="pista">La envoltura nuclear tiene pequeños orificios o <span class="keyword">hoyitos</span> que permiten el paso de información.</div>
+        <div class="alerta"><strong>Respuesta correcta:</strong> Poros</div>
+    </div>
+
+    <div class="card">
+        <p><span class="explicacion">22</span> <span class="pregunta-titulo">¿Dónde está el nucléolo?</span></p>
+        <div class="pista">El nucléolo es una mancha densa que vive justo en el centro del centro: dentro del...</div>
+        <div class="alerta"><strong>Respuesta correcta:</strong> Núcleo</div>
+    </div>
+
+</div>
+
+
+
+    
+
+<div style="margin-top: 30px; background: white; padding: 20px; border-radius: 12px; border: 2px dashed #0984e3;">
+    <h2 style="text-align: center;">🚀 Resumen para el Desafío Final</h2>
+    <ul>
+        <li><strong>Crecimiento:</strong> Es lo que hace la célula bajo la orden del núcleo después de comer y antes de dividirse.</li>
+        <li><strong>Centriolos:</strong> Imagina dos tubos cruzados que solo aparecen cuando la célula animal se va a dividir.</li>
+        <li><strong>Pista del Nucleolo:</strong> Es un círculo oscuro <i>dentro</i> del núcleo. Su función es hacer ribosomas.</li>
+    </ul>
+</div>
+
+<script>
+    let aciertos = 0;
+    const marcadosTextos = new Set();
+
+    // Funciones del Modal
+    function abrirGuia() { document.getElementById('modalGuia').style.display = "block"; }
+    function cerrarGuia() { document.getElementById('modalGuia').style.display = "none"; }
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('modalGuia')) cerrarGuia();
+    }
+
+    // Lógica de Validación (Tu código original)
+    function validarClick(elemento, esCorrecto) {
+        const parent = elemento.parentNode;
+        if (parent.dataset.contestado === "true") return;
+
+        if(esCorrecto) {
+            elemento.classList.add('correcta');
+            aciertos++;
+            document.getElementById('puntos').innerText = aciertos;
+            parent.dataset.contestado = "true";
+            elemento.innerHTML += " - ✅";
+        } else {
+            elemento.classList.add('incorrecta');
+            setTimeout(() => { elemento.classList.remove('incorrecta'); }, 1000);
+        }
+    }
+
+    function validarTexto(id, respuestaCorrecta) {
+        if (marcadosTextos.has(id)) return;
+        let userVal = document.getElementById(id).value.toLowerCase().trim();
+        let feedback = document.getElementById('f-' + id);
+        feedback.style.display = "block";
+        
+        let normalizada = userVal.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        let correctaNorm = respuestaCorrecta.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+        if(normalizada === correctaNorm) {
+            feedback.innerHTML = "¡Excelente! 🌟";
+            feedback.style.color = "#27ae60";
+            aciertos++;
+            document.getElementById('puntos').innerText = aciertos;
+            marcadosTextos.add(id);
+            document.getElementById(id).disabled = true;
+        } else {
+            feedback.innerHTML = "Casi... Inténtalo de nuevo.";
+            feedback.style.color = "#e74c3c";
+        }
+    }
+</script>
+
+</body>
+</html>
